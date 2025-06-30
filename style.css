@@ -1,0 +1,59 @@
+@font-face {
+    font-family: 'amsterdam-graffiti';
+    src: url('font/amsterdam.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'ubrban-graffiti';
+    src: url('font/urban-graffiti.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal
+}
+
+body {
+    justify-items: center;
+    align-items: center;
+
+    margin: 0;
+    overflow: hidden;
+    background-color: #fffaf0;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+#obj-container
+{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+
+    border: #000 solid 1px;
+
+    overflow: hidden;
+}
+
+.title-header{
+    font-family: 'ubrban-graffiti', sans-serif;
+    font-weight: normal;
+    font-size: large;
+
+    position: absolute;
+    top: 10;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    color: #1d1d1d;
+    padding: 10px;
+
+    z-index: 10;
+}
