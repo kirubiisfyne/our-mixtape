@@ -1,3 +1,6 @@
+:root {
+    --border: 0px;
+}
 @font-face {
     font-family: 'amsterdam-graffiti';
     src: url('font/amsterdam.ttf') format('truetype'); 
@@ -6,54 +9,216 @@
 }
 
 @font-face {
-    font-family: 'ubrban-graffiti';
+    font-family: 'urban-graffiti';
     src: url('font/urban-graffiti.ttf') format('truetype');
     font-weight: normal;
     font-style: normal
 }
 
-body {
-    justify-items: center;
-    align-items: center;
+@font-face {
+    font-family: 'whoa';
+    src: url('font/whoa.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal
+}
 
-    margin: 0;
+@font-face {
+    font-family: 'sprayerz';
+    src: url('font/sprayerz.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal
+}
+
+/* Animation */
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-out {
+    animation: fade 1s ease-in-out forwards;
+}
+
+.fade-in {
+    animation: fade 1s ease-in-out reverse backwards;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
+    padding: 0;
+    margin: 0;
     background-color: #fffaf0;
 }
-main {
+main { 
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
     height: 100vh;
 }
-#obj-container
-{
+#obj-container {
+
     display: flex;
-    flex-direction: column;
     position: relative;
-    width: 90vw;
-    height: 90vh;
+    width: 100vw;
+    height: 100vw;
+    anchor-name: --obj-anchor;
+
     justify-content: center;
     align-items: center;
 
-    border: #000 solid 1px;
-
     overflow: hidden;
+    border: blue solid 2px;
+
+    z-index: 0;
 }
 
-.title-header{
-    font-family: 'ubrban-graffiti', sans-serif;
+#title-container {
+    mix-blend-mode: difference;
+
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1;
+    pointer-events: none;
+}
+
+#title-header{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'whoa', sans-serif;
     font-weight: normal;
-    font-size: large;
+    font-style: normal;
+    font-size: 10vh;
+    text-align: center;
+    text-justify: center;
+    letter-spacing: -1vh;
+
+    color: #d6d6d6;
 
     position: absolute;
-    top: 10;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 2em;
-    color: #1d1d1d;
-    padding: 10px;
+    bottom: 60vh;
+    width: inherit;
 
-    z-index: 10;
+    border: #d6d6d6 solid var(--border);
+}
+#title-subheader{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'tahoma', sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 2.75vh;
+    text-align: center;
+    text-justify: center;
+    letter-spacing: 0.25vh;
+
+    color: #d6d6d6;
+
+    position: absolute;
+    bottom: 69vh;
+    width: inherit;
+
+    border: #d6d6d6 solid var(--border);
+}
+#title-footer{
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'tahoma', sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 2vh;
+    text-align: center;
+    text-justify: center;
+    letter-spacing: 0.25vh;
+
+    color: #d6d6d6;
+
+    position: absolute;
+    bottom: 33vh;
+    width: 100vw;
+
+    border: #d6d6d6 solid var(--border);
+}
+
+#playlist-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    width: 50vh;
+    height: 100vh;
+    z-index: -1;
+    
+    visibility: hidden;
+
+    border: red solid var(--border);
+}
+
+#card-list {
+    position: relative;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    height: 60vh;
+    width: 90vw;
+    gap: 20vh;
+
+    overflow: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+#card-list::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    scroll-snap-align: center;
+    position: relative;
+    scrollbar-color: #00000000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40vh;
+    height: 60vh;
+
+    background-color: #d6d6d6;
+    color: black;
+    border-radius: 15px;
+
+    font-family: 'tahoma', sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 1.5vh;
+
+    transition: transform 0.5s ease-in-out;
 }
