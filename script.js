@@ -54,8 +54,15 @@ function adjustZ() {
     let newZ = baseDistance * aspectRatioClamped;
 
     camera.position.z = newZ;
+}
 
-    console.log(canvas.clientWidth);
+function animateOnScroll(cardIndex) {
+    let card = document.querySelector(`[data-index="${cardIndex}"]`);
+    card.style.animation = 'rotate 0.5s ease-in-out forwards';
+}
+function reanimateOnScroll(cardIndex) {
+    let card = document.querySelector(`[data-index="${cardIndex}"]`)
+    card.style.animation = 'rotate 0.5s ease-in-out backwards';
 }
 //#endregion
 
@@ -119,7 +126,6 @@ scene.add(ambientLight);
 
 window.addEventListener('resize', () => {
     adjustZ();
-
 });
 
 document.addEventListener('mouseout', (e) => {
@@ -167,10 +173,31 @@ canvas.addEventListener('pointerdown', (e) => {
   }
 });
 
-document.onmousemove = (e) => {
-    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-};
+const cards = document.querySelectorAll('.card');
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            entry.target.style.animation = '';
+        })
+
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'rotate 0.5s ease forwards';
+            }
+        }),
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+                entry.target.style.animation = 'rotate-back 0.5s ease forwards';
+            }
+        })
+    },
+    {
+        root: document.querySelector('.card-list'),
+        threshold: 0.75
+    }
+);
+
+cards.forEach(card => observer.observe(card));
 
 function animate() {
     updateObjectRotation();

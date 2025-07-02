@@ -31,12 +31,8 @@
 
 /* Animation */
 @keyframes fade {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 .fade-out {
@@ -45,6 +41,15 @@
 
 .fade-in {
     animation: fade 1s ease-in-out reverse backwards;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(20deg); }
+}
+@keyframes rotate-back {
+    from { transform: rotate(20deg); }
+    to { transform: rotate(0deg); }
 }
 body {
     display: flex;
@@ -171,7 +176,7 @@ main {
 
     position: absolute;
     width: 50vh;
-    height: 100vh;
+    height: 80vh;
     z-index: -1;
     
     visibility: hidden;
@@ -187,6 +192,8 @@ main {
 
     height: 60vh;
     width: 90vw;
+    padding-top: 20vh;
+    padding-bottom: 20vh;
     gap: 20vh;
 
     overflow: scroll;
@@ -208,10 +215,10 @@ main {
     justify-content: center;
     align-items: center;
 
-    width: 40vh;
-    height: 60vh;
+    width: 35vh;
+    height: 45vh;
 
-    background-color: #d6d6d6;
+    background-color: #e4e1d6;
     color: black;
     border-radius: 15px;
 
@@ -219,6 +226,14 @@ main {
     font-weight: normal;
     font-style: italic;
     font-size: 1.5vh;
+}
 
-    transition: transform 0.5s ease-in-out;
+#card-fade {
+    position: absolute;
+    bottom: 0vh;
+    height: 15vh;
+    width: inherit;
+    background-image: linear-gradient(#00000000, #fffaf0);
+
+    border: red solid 0px;
 }
