@@ -14,6 +14,7 @@ let isCursorOut = false;
 
 let objects = [];
 let objToRender = ['mixtape', 'walkman'];
+let mixer;
 //#endregion
 //#region Functions
 let targetRotX = 0;
@@ -56,13 +57,25 @@ function adjustZ() {
     camera.position.z = newZ;
 }
 
-function animateOnScroll(cardIndex) {
-    let card = document.querySelector(`[data-index="${cardIndex}"]`);
-    card.style.animation = 'rotate 0.5s ease-in-out forwards';
+let willMoveWalkman = false;
+function moveWalkman() {
+    const targetPos = 14;
+    let currentYPos = objects[1].position.y;
+
+    currentYPos += (targetPos - currentYPos) * 0.05;
+
+    objects[1].position.set(0, currentYPos, 0);
 }
-function reanimateOnScroll(cardIndex) {
-    let card = document.querySelector(`[data-index="${cardIndex}"]`)
-    card.style.animation = 'rotate 0.5s ease-in-out backwards';
+
+let startBob = false;
+const clock = new THREE.Clock();
+function bobWalkman() {
+    const time = clock.getElapsedTime();
+    
+    let bob = Math.sin(time * 2) * 0.02;
+
+    objects[1].position.y += bob;
+    
 }
 //#endregion
 
@@ -89,17 +102,22 @@ loader.load(
     }
 )
 //Walkman
-/*
 loader.load(
     `models/${objToRender[1]}/scene.gltf`,
     function (gltf) {
         let object = gltf.scene;
         scene.add(object);
-        object.position.set(0, 0, 0);
-        object.scale.set(1, 1, 1);
+        object.position.set(0, 40, 0);
+        object.rotation.set(0, 0, -6);
+        object.scale.set(1.2, 1.2, 1.2);
 
         objects.push(object);
         adjustZ();
+
+        mixer = new THREE.AnimationMixer(object);
+        gltf.animations.forEach((clip) => {
+            mixer.clipAction(clip).play();
+        })
     },
     function ( xhr ) {
         console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -107,7 +125,6 @@ loader.load(
     function ( error ) {
         console.error( 'An error happened while loading the model:', error );
     })
-*/
 //#endregion
 
 const canvas = document.getElementById('obj-container').appendChild(renderer.domElement);
@@ -135,6 +152,8 @@ document.addEventListener('mouseout', (e) => {
     else {
         isCursorOut = false;
     }
+
+    console.log(isCursorOut);
 });
 
 document.addEventListener('touchmove', (e) => {
@@ -142,6 +161,12 @@ document.addEventListener('touchmove', (e) => {
     mouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
     isCursorOut = false;
 });
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+    mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    isCursorOut = false;
+})
 
 canvas.addEventListener('pointerdown', (e) => {
   const rect = canvas.getBoundingClientRect();
@@ -154,21 +179,27 @@ canvas.addEventListener('pointerdown', (e) => {
 
   if (intersects.length > 0) {
     console.log('Model clicked/touched!', intersects[0]);
+    const titleArray = Array.from(document.getElementById('title-container').children);
+    const objCont = document.getElementById('obj-container');
+    const playlistCont = document.getElementById('playlist-container');
 
-    document.getElementById('obj-container').classList.add('fade-out');
-    document.getElementById('obj-container').style.zIndex = '-1';
+    titleArray.forEach(element => {
+        element.classList.add('fade-out');
+    });
+    objCont.classList.add('fade-out');
+    objCont.style.zIndex = '2';
+    objCont.style.pointerEvents = 'none';
 
-    document.getElementById('title-header').classList.add('fade-out');
-    document.getElementById('title-subheader').classList.add('fade-out');
-    document.getElementById('title-footer').classList.add('fade-out');
-    document.getElementById('title-container').style.zIndex = '0';
+    objCont.addEventListener('animationend', () => {
+        objects[0].visible = false;
+        objCont.classList.add('fade-in');
 
-    document.getElementById('obj-container').addEventListener('animationend', () => {
-        document.getElementById('obj-container').style.display = 'none';
+        playlistCont.style.visibility = 'visible';
+        playlistCont.style.zIndex = '1';
+        playlistCont.classList.add('fade-in');
 
-        document.getElementById('playlist-container').classList.add('fade-in');
-        document.getElementById('playlist-container').style.visibility = 'visible';
-        document.getElementById('playlist-container').style.zIndex = '1';
+        willMoveWalkman = true;
+        console.log('animation ended!');
     });
   }
 });
@@ -200,6 +231,16 @@ const observer = new IntersectionObserver(
 cards.forEach(card => observer.observe(card));
 
 function animate() {
+    if (willMoveWalkman) {
+        moveWalkman();
+
+        document.addEventListener('animationend', () => {
+            startBob = true;
+        })
+    }
+    if (startBob) {
+        bobWalkman();
+    }
     updateObjectRotation();
     requestAnimationFrame(animate);
     renderer.render(scene, camera);

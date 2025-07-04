@@ -1,32 +1,40 @@
 :root {
     --border: 0px;
+    --color: #eae4da;
 }
 @font-face {
     font-family: 'amsterdam-graffiti';
     src: url('font/amsterdam.ttf') format('truetype'); 
     font-weight: normal;
-    font-style: normal
+    font-style: normal;
 }
 
 @font-face {
     font-family: 'urban-graffiti';
     src: url('font/urban-graffiti.ttf') format('truetype');
     font-weight: normal;
-    font-style: normal
+    font-style: normal;
 }
 
 @font-face {
     font-family: 'whoa';
     src: url('font/whoa.ttf') format('truetype');
     font-weight: normal;
-    font-style: normal
+    font-style: normal;
 }
 
 @font-face {
     font-family: 'sprayerz';
     src: url('font/sprayerz.ttf') format('truetype');
     font-weight: normal;
-    font-style: normal
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'the-series';
+    src: url('font/the_series.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* Animation */
@@ -58,7 +66,7 @@ body {
     overflow: hidden;
     padding: 0;
     margin: 0;
-    background-color: #fffaf0;
+    background-color: var(--color);
 }
 main { 
     position: relative;
@@ -74,13 +82,9 @@ main {
     position: relative;
     width: 100vw;
     height: 100vw;
-    anchor-name: --obj-anchor;
 
     justify-content: center;
     align-items: center;
-
-    overflow: hidden;
-    border: blue solid 2px;
 
     z-index: 0;
 }
@@ -115,13 +119,11 @@ main {
     text-justify: center;
     letter-spacing: -1vh;
 
-    color: #d6d6d6;
+    color: var(--color);
 
     position: absolute;
     bottom: 60vh;
     width: inherit;
-
-    border: #d6d6d6 solid var(--border);
 }
 #title-subheader{
     display: flex;
@@ -137,13 +139,11 @@ main {
     text-justify: center;
     letter-spacing: 0.25vh;
 
-    color: #d6d6d6;
+    color: var(--color);
 
     position: absolute;
     bottom: 69vh;
     width: inherit;
-
-    border: #d6d6d6 solid var(--border);
 }
 #title-footer{
     display: flex;
@@ -159,13 +159,18 @@ main {
     text-justify: center;
     letter-spacing: 0.25vh;
 
-    color: #d6d6d6;
+    color: var(--color);
 
     position: absolute;
     bottom: 33vh;
     width: 100vw;
+}
 
-    border: #d6d6d6 solid var(--border);
+#playlist-header {
+    font-family: 'sprayerz';
+    font-size: 10vh;
+    letter-spacing: 0.8vh;
+    transform: rotate(7deg);
 }
 
 #playlist-container {
@@ -180,8 +185,6 @@ main {
     z-index: -1;
     
     visibility: hidden;
-
-    border: red solid var(--border);
 }
 
 #card-list {
@@ -196,7 +199,8 @@ main {
     padding-bottom: 20vh;
     gap: 20vh;
 
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -213,14 +217,15 @@ main {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
 
     width: 35vh;
-    height: 45vh;
+    height: 42vh;
+    padding-top: 1.5vh;
 
-    background-color: #e4e1d6;
-    color: black;
-    border-radius: 15px;
+    background-color: #f4efe9;
+    border-radius: 5px;
+    box-shadow: 8px 8px 8px #ccc7bc;
 
     font-family: 'tahoma', sans-serif;
     font-weight: normal;
@@ -228,12 +233,30 @@ main {
     font-size: 1.5vh;
 }
 
+.card img {
+    width: 32vh;
+    height: 32vh;
+    border-radius: 0.5vh;
+
+    box-shadow: inset;
+    z-index: 5;
+}
+
+.card span {
+    position: absolute;
+    z-index: 6;
+
+    color: #232a36;
+    mix-blend-mode: multiply;
+    
+}
+
 #card-fade {
     position: absolute;
     bottom: 0vh;
     height: 15vh;
     width: inherit;
-    background-image: linear-gradient(#00000000, #fffaf0);
+    background-image: linear-gradient(#00000000, var(--color));
 
     border: red solid 0px;
 }
