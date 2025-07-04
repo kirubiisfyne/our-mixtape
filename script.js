@@ -60,11 +60,15 @@ function adjustZ() {
 let willMoveWalkman = false;
 function moveWalkman() {
     const targetPos = 14;
+    const targetScale = 1.2;
     let currentYPos = objects[1].position.y;
+    let currentScale = objects[1].scale.x;
 
-    currentYPos += (targetPos - currentYPos) * 0.05;
+    currentYPos += (targetPos - currentYPos) * 0.02;
+    currentScale += (targetScale - currentScale) * 0.02;
 
     objects[1].position.set(0, currentYPos, 0);
+    objects[1].scale.set(currentScale, currentScale, currentScale);
 }
 
 let startBob = false;
@@ -72,8 +76,10 @@ const clock = new THREE.Clock();
 function bobWalkman() {
     const time = clock.getElapsedTime();
     
-    let bob = Math.sin(time * 2) * 0.02;
+    let bob = Math.sin(time * 3) * 0.01;
 
+    objects[1].rotation.y += bob * 0.1;
+    objects[1].rotation.z += bob * 0.125;
     objects[1].position.y += bob;
     
 }
@@ -107,9 +113,9 @@ loader.load(
     function (gltf) {
         let object = gltf.scene;
         scene.add(object);
-        object.position.set(0, 40, 0);
+        object.position.set(0, 45, 0);
         object.rotation.set(0, 0, -6);
-        object.scale.set(1.2, 1.2, 1.2);
+        object.scale.set(0.3, 0.3, 0.3);
 
         objects.push(object);
         adjustZ();
