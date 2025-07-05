@@ -12,11 +12,12 @@
             "three": "https://unpkg.com/three@0.141.0/build/three.module.js"
         }
     }
-</script>
+    </script>
 
 </head>
 <body>
     <main>
+        <audio id="playlist-player" autoplay></audio>
         <div id="obj-container"></div>
         <div id="title-container">
             <div id="title-subheader">our</div>
@@ -24,18 +25,54 @@
             <div id="title-footer">from Kirubi, for Oleaveyah.</div>
         </div>
         <div id="playlist-container">
-            <div style="position: absolute; bottom: 69vh; height: 20vh; width: 720px; background-color: #eae4da; transform: rotate(17deg); z-index: 1; border: red solid 0px;"></div>
+            <div id="player-container">
+                <span style="animation: flicker 1s ease-in-out infinite;"> - Now Playing - </span>
+                <span id="player-span"></span>
+                <span style="position: absolute; bottom: 0vh; font-size: 0.75em;"></span>
+            </div>
+            <div style="position: absolute; bottom: 69vh; height: 20vh; width: 720px; background-color: #eae4da; transform: rotate(17deg); z-index: 1;"></div>
             <div id="card-list">
-                <div class="card" data-index="1"><img src="images/img-1.jpg" alt="#1"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="2"><img src="images/img-2.jpg" alt="#2"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="3"><img src="images/img-3.jpg" alt="#3"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="4"><img src="images/img-4.jpg" alt="#4"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="5"><img src="images/img-5.jpg" alt="#5"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="6"><img src="images/img-6.jpg" alt="#6"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="7"><img src="images/img-7.jpg" alt="#7"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="8"><img src="images/img-8.jpeg" alt="#8"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="9"><img src="images/img-9.jpeg" alt="#9"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
-                <div class="card" data-index="10"><img src="images/img-10.jpeg" alt="#10"><span style="font-family: the-series; font-size: 9vh; letter-spacing: -0.4vh; bottom: 5vh; left: 8vh; transform: rotate(10deg);">Mixtape!</span></div>
+                <div class="card" data-index="1">
+                    <img src="images/img-1.jpg" alt="#1">
+                    <span class="caption-span" style="font-family: 'blackdog';">nuWavee!</span>
+                </div>
+                <div class="card" data-index="2">
+                    <img src="images/img-2.jpg" alt="#2">
+                    <span class="caption-span" style="font-family: 'the-series';">jabe nights</span>
+                </div>
+                <div class="card" data-index="3">
+                    <img src="images/img-3.jpg" alt="#3">
+                    <span class="caption-span" style="font-family: 'blackdog';">GDay!</span>
+                </div>
+                <div class="card" data-index="4">
+                    <img src="images/img-4.jpg" alt="#4">
+                    <span class="caption-span" style="font-family: 'blackdog';">black .22</span>
+                </div>
+                <div class="card" data-index="5">
+                    <img src="images/img-5.jpg" alt="#5">
+                    <span class="caption-span" style="font-family: 'the-series';">Koreana days</span>
+                </div>
+                <div class="card" data-index="6">
+                    <img src="images/img-6.jpg" alt="#6">
+                    <span class="caption-span" style="font-family: 'blackdog';">Lara Debut</span>
+                </div>
+                <div class="card" data-index="7">
+                    <img src="images/img-7.jpg" alt="#7">
+                    <span class="caption-span" style="font-family: 'the-series';">post-finalss</span>
+                </div>
+                <div class="card" data-index="8">
+                    <img src="images/img-8.jpeg" alt="#8">
+                    <span class="caption-span" style="font-family: 'blackdog';">u-weekk</span>
+                </div>
+                <div class="card" data-index="9">
+                    <img src="images/img-9.jpeg" alt="#9">
+                    <span class="caption-span" style="font-family: 'the-series';">Valentines cutie</span>
+                </div>
+                <div class="card" data-index="10">
+                    <img src="images/img-10.jpeg" alt="#10">
+                    <span class="caption-span" style="font-family: 'blackdog';">Guim' Trip</span>
+                </div>
+                <div id="letter">Letter</div>
             </div>
             <div id="card-fade"></div>
     </main>

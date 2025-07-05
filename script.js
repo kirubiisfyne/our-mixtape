@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'https://unpkg.com/three@0.141.0/examples/jsm/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(80, window.innerWidth / innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
 renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -14,7 +14,9 @@ let isCursorOut = false;
 
 let objects = [];
 let objToRender = ['mixtape', 'walkman'];
-let mixer;
+const clock = new THREE.Clock();
+
+let playlistLoaded = false;
 //#endregion
 //#region Functions
 let targetRotX = 0;
@@ -58,22 +60,25 @@ function adjustZ() {
 }
 
 let willMoveWalkman = false;
-function moveWalkman() {
-    const targetPos = 14;
-    const targetScale = 1.2;
+function moveWalkman(direction) {
+    if (!objects[1]) return;
+
+    const targetYPos = direction ? 12.5 : 45;
+    const targetScale = direction ? 1.2 : 0.3;
     let currentYPos = objects[1].position.y;
     let currentScale = objects[1].scale.x;
 
-    currentYPos += (targetPos - currentYPos) * 0.02;
-    currentScale += (targetScale - currentScale) * 0.02;
+    currentYPos += (targetYPos - currentYPos)* 0.02;
+    currentScale += (targetScale - currentScale)     * 0.02;
 
-    objects[1].position.set(0, currentYPos, 0);
+    objects[1].position.y = currentYPos;
     objects[1].scale.set(currentScale, currentScale, currentScale);
 }
 
 let startBob = false;
-const clock = new THREE.Clock();
 function bobWalkman() {
+    if (!objects[1]) return;
+
     const time = clock.getElapsedTime();
     
     let bob = Math.sin(time * 3) * 0.01;
@@ -99,6 +104,8 @@ loader.load(
 
         objects.push(object);
         adjustZ();
+
+        console.log('Mixtape loaded!');
     },
     function ( xhr ) {
         console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -113,17 +120,15 @@ loader.load(
     function (gltf) {
         let object = gltf.scene;
         scene.add(object);
-        object.position.set(0, 45, 0);
+        object.position.set(1, 45, 0);
         object.rotation.set(0, 0, -6);
         object.scale.set(0.3, 0.3, 0.3);
 
         objects.push(object);
         adjustZ();
 
-        mixer = new THREE.AnimationMixer(object);
-        gltf.animations.forEach((clip) => {
-            mixer.clipAction(clip).play();
-        })
+        console.log('Walkman loaded!');
+
     },
     function ( xhr ) {
         console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
@@ -133,7 +138,8 @@ loader.load(
     })
 //#endregion
 
-const canvas = document.getElementById('obj-container').appendChild(renderer.domElement);
+document.getElementById('obj-container').appendChild(renderer.domElement);
+const canvas = renderer.domElement;
 camera.position.z = 25;
 
 const raycaster = new THREE.Raycaster();
@@ -158,8 +164,6 @@ document.addEventListener('mouseout', (e) => {
     else {
         isCursorOut = false;
     }
-
-    console.log(isCursorOut);
 });
 
 document.addEventListener('touchmove', (e) => {
@@ -205,7 +209,10 @@ canvas.addEventListener('pointerdown', (e) => {
         playlistCont.classList.add('fade-in');
 
         willMoveWalkman = true;
-        console.log('animation ended!');
+        playlistLoaded = true;
+
+        playTrack(currentTrack);
+        console.log(playlist[currentTrack]);
     });
   }
 });
@@ -233,16 +240,72 @@ const observer = new IntersectionObserver(
         threshold: 0.75
     }
 );
-
 cards.forEach(card => observer.observe(card));
+
+const letterObserver = new IntersectionObserver(
+    (entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log('Observing Letter');
+                willMoveWalkman = false;
+            } else {
+                if (playlistLoaded) {
+                    willMoveWalkman = true;
+                }
+            }
+        })
+    },
+    {
+        threshold: 0.5
+    }
+);
+letterObserver.observe(document.getElementById('letter'));
+
+//#region Audio 
+const playlist = [
+            'See you again; Tyler, The Creator',
+            'Something About You; Eyedress',
+            'Is there free breakfast here?; Hotel Ugly',
+            '2085; AJR',
+            'Freaking Out the Neighborhood; Mac DeMarco',
+            'Would That I; Hozier',
+            'Snooze; SZA',
+            'SWEET/I THOUGHT YOU WANTED TO DANCE; Tyler, The Creator',
+            "Taking What's Not Yours; TV Girl",
+            'Good Luck, Babe; Chappell Roan',
+            'Loose; Daniel Ceasar',
+            'BEST INTEREST; Tyler, The Creator',
+            'Get You; Daniel Ceasar, Kali Uchis',
+            'luther; Kendrick Lamar, SZA',
+        ];
+
+        let currentTrack = 0;
+        const audioPlayer = document.getElementById('playlist-player');
+
+        function playTrack(index) {
+            console.log(audioPlayer.src = 'audio/playlist/' + String(playlist[index]) + '.mp3');
+            audioPlayer.src = 'audio/playlist/' + playlist[index] + '.mp3';
+            audioPlayer.play()
+
+            let trackData = playlist[currentTrack].split('; ');
+            document.getElementById('player-container').children[1].textContent = trackData[0];
+            document.getElementById('player-container').children[2].textContent = trackData[1];
+        }
+        
+        audioPlayer.addEventListener('ended', () => {
+            currentTrack = (currentTrack + 1) % playlist.length;
+            playTrack(currentTrack);
+        });
+//#endregion
 
 function animate() {
     if (willMoveWalkman) {
-        moveWalkman();
-
+        moveWalkman(true);
         document.addEventListener('animationend', () => {
             startBob = true;
-        })
+        });
+    } else {
+        moveWalkman(false);
     }
     if (startBob) {
         bobWalkman();
