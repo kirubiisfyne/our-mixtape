@@ -264,13 +264,13 @@ letterObserver.observe(document.getElementById('letter'));
 //#region Audio 
 const playlist = [
             'See you again; Tyler, The Creator',
-            'Something About You; Eyedress',
-            'Is there free breakfast here?; Hotel Ugly',
+            'Something About You; Eyedress, Dent May',
+            'Is there free breakfast here[qmark]; Hotel Ugly',
             '2085; AJR',
             'Freaking Out the Neighborhood; Mac DeMarco',
             'Would That I; Hozier',
             'Snooze; SZA',
-            'SWEET/I THOUGHT YOU WANTED TO DANCE; Tyler, The Creator',
+            'SWEET[slash]I THOUGHT YOU WANTED TO DANCE; Tyler, The Creator',
             "Taking What's Not Yours; TV Girl",
             'Good Luck, Babe; Chappell Roan',
             'Loose; Daniel Ceasar',
@@ -279,23 +279,29 @@ const playlist = [
             'luther; Kendrick Lamar, SZA',
         ];
 
-        let currentTrack = 0;
-        const audioPlayer = document.getElementById('playlist-player');
+let currentTrack = 0;
+const audioPlayer = document.getElementById('playlist-player');
 
-        function playTrack(index) {
-            console.log(audioPlayer.src = 'audio/playlist/' + String(playlist[index]) + '.mp3');
-            audioPlayer.src = 'audio/playlist/' + playlist[index] + '.mp3';
-            audioPlayer.play()
+function playTrack(index) {
+    console.log(audioPlayer.src = 'audio/playlist/' + String(playlist[index]) + '.mp3');
+    audioPlayer.src = 'audio/playlist/' + playlist[index] + '.mp3';
 
-            let trackData = playlist[currentTrack].split('; ');
-            document.getElementById('player-container').children[1].textContent = trackData[0];
-            document.getElementById('player-container').children[2].textContent = trackData[1];
-        }
-        
-        audioPlayer.addEventListener('ended', () => {
-            currentTrack = (currentTrack + 1) % playlist.length;
-            playTrack(currentTrack);
-        });
+    let trackData = playlist[currentTrack].split('; ');
+    trackData = trackData.map(data =>
+        data
+            .replaceAll('[qmark]', '?')
+            .replaceAll('[slash]', '/')
+        );
+    console.log(trackData);
+    document.getElementById('player-container').children[1].textContent = trackData[0];
+    document.getElementById('player-container').children[2].textContent = trackData[1];
+}
+
+audioPlayer.addEventListener('ended', () => {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    playTrack(currentTrack);
+    audioPlayer.play()
+});
 //#endregion
 
 function animate() {
