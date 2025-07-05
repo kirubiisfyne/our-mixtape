@@ -192,6 +192,7 @@ canvas.addEventListener('pointerdown', (e) => {
     const titleArray = Array.from(document.getElementById('title-container').children);
     const objCont = document.getElementById('obj-container');
     const playlistCont = document.getElementById('playlist-container');
+    const playerCont = document.getElementById('player-container');
 
     titleArray.forEach(element => {
         element.classList.add('fade-out');
@@ -199,6 +200,8 @@ canvas.addEventListener('pointerdown', (e) => {
     objCont.classList.add('fade-out');
     objCont.style.zIndex = '2';
     objCont.style.pointerEvents = 'none';
+
+    sfxPlayer.play();
 
     objCont.addEventListener('animationend', () => {
         objects[0].visible = false;
@@ -208,11 +211,12 @@ canvas.addEventListener('pointerdown', (e) => {
         playlistCont.style.zIndex = '1';
         playlistCont.classList.add('fade-in');
 
+        playerCont.style.visibility = 'visible';
+        playerCont.classList.add('fade-in');
         willMoveWalkman = true;
         playlistLoaded = true;
 
         playTrack(currentTrack);
-        console.log(playlist[currentTrack]);
     });
   }
 });
@@ -262,6 +266,7 @@ const letterObserver = new IntersectionObserver(
 letterObserver.observe(document.getElementById('letter'));
 
 //#region Audio 
+const sfxPlayer = document.getElementById('sfx-player');
 const playlist = [
             'See you again; Tyler, The Creator',
             'Something About You; Eyedress, Dent May',

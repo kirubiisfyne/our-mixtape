@@ -18,6 +18,14 @@
 <body>
     <main>
         <audio id="playlist-player" autoplay></audio>
+        <audio id="sfx-player" src='audio/walkman-sfx.mp3' autoplay></audio>
+
+        <div id="player-container">
+            <span style="animation: flicker 1s ease-in-out infinite;"> - Now Playing - </span>
+            <span id="player-span"></span>
+            <span style="position: absolute; bottom: 0vh; font-size: 0.75em;"></span>
+        </div>
+
         <div id="obj-container"></div>
         <div id="title-container">
             <div id="title-subheader">our</div>
@@ -25,11 +33,7 @@
             <div id="title-footer">from Kirubi, for Oleaveyah.</div>
         </div>
         <div id="playlist-container">
-            <div id="player-container">
-                <span style="animation: flicker 1s ease-in-out infinite;"> - Now Playing - </span>
-                <span id="player-span"></span>
-                <span style="position: absolute; bottom: 0vh; font-size: 0.75em;"></span>
-            </div>
+
             <div style="position: absolute; bottom: 69vh; height: 20vh; width: 720px; background-color: #eae4da; transform: rotate(17deg); z-index: 1;"></div>
             <div id="card-list">
                 <div class="card" data-index="1">
@@ -72,7 +76,23 @@
                     <img src="images/img-10.jpeg" alt="#10">
                     <span class="caption-span" style="font-family: 'blackdog';">Guim' Trip</span>
                 </div>
-                <div id="letter">Letter</div>
+                <div id="letter">
+                    <span style="font-size: 1em; font-weight: bold;">to my dearest dam,</span>
+                    <br>
+                    hi dam, this is where i’ve spent my time this past week, 
+                    only this, effort and frustrations came along with it, but it would be forever worth it, 
+                    everything i do for you will forever be worth it. 
+                    i thought that instead of something that can be bought with money why not give you something priceless, 
+                    my love, effort, time and passion in one, made of bits, 1s and 0s, but forever will last. 
+                    doing something for you in a very me way, made this very special to me, 
+                    this may not be that much, but this is the most effort i given to a gift for someone, to anyone. 
+                    spending a week on this made me realize how much you changed me, back then, 
+                    i wouldn’t this for anyone, but this is the proof that i changed, 
+                    you changed me dam, and i will forever thank you for that, the change, love and joy that you’ve given me, 
+                    i can’t thank you enough for that, ill forever thank you for that. 
+                    remember always that i love you, in every cell in my body, 
+                    from the very bottom of my heart, i love you dam, and forever will.
+                </div>
             </div>
             <div id="card-fade"></div>
     </main>

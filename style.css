@@ -257,18 +257,26 @@ main {
     scroll-snap-align: center;
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: top;
 
     padding-top: 5vh;
+    gap: 4vh;
 
     width: 50vh;
     height: 60vh;
+
+    font-family: tahoma;
+    font-size: 0.8em;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.5em;
 }
 
 #player-container {
     position: absolute;
-    bottom: -1vh;
+    top: 5vh;
 
     display: flex;
     flex-direction: column;
@@ -281,9 +289,12 @@ main {
     font-family: 'tahoma';
     font-style: italic;
     font-size: 1em;
-    color: #0a0b0f;
+    color: var(--color);
+    mix-blend-mode: difference;
 
-    z-index: 2;
+    z-index: 3;
+
+    visibility: hidden;
 }
 
 #player-span {
