@@ -260,7 +260,7 @@ const letterObserver = new IntersectionObserver(
         })
     },
     {
-        threshold: 0.5
+        threshold: 0.1
     }
 );
 letterObserver.observe(document.getElementById('letter'));
